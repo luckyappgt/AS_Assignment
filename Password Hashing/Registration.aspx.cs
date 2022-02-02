@@ -33,34 +33,55 @@ namespace Password_Hashing
 
         protected void btn_Submit_Click(object sender, EventArgs e)
         {
-            string pwd = tb_pwd.Text.ToString().Trim(); ;
+            SqlConnection connection = new SqlConnection(MYDBConnectionString);
+            string sql = "select * from Account where email=@userid";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@userid", tb_userid.Text.Trim());
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    lb_error1.Text = "User already available";
+                }
+                else
+                {
+                    string pwd = tb_pwd.Text.ToString().Trim(); ;
 
-            //Generate random "salt" 
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            byte[] saltByte = new byte[8];
+                    //Generate random "salt" 
+                    RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                    byte[] saltByte = new byte[8];
 
-            //Fills array of bytes with a cryptographically strong sequence of random values.
-            rng.GetBytes(saltByte);
-            salt = Convert.ToBase64String(saltByte);
+                    //Fills array of bytes with a cryptographically strong sequence of random values.
+                    rng.GetBytes(saltByte);
+                    salt = Convert.ToBase64String(saltByte);
 
-            SHA512Managed hashing = new SHA512Managed();
+                    SHA512Managed hashing = new SHA512Managed();
 
-            string pwdWithSalt = pwd + salt;
-            byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
-            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                    string pwdWithSalt = pwd + salt;
+                    byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
+                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
 
-            finalHash = Convert.ToBase64String(hashWithSalt);
+                    finalHash = Convert.ToBase64String(hashWithSalt);
 
-            lb_error1.Text = "Salt:" + salt;
-            lb_error2.Text = "Hash with salt:" + finalHash;
+                    lb_error1.Text = "Salt:" + salt;
+                    lb_error2.Text = "Hash with salt:" + finalHash;
 
-            RijndaelManaged cipher = new RijndaelManaged();
-            cipher.GenerateKey();
-            Key = cipher.Key;
-            IV = cipher.IV;
+                    RijndaelManaged cipher = new RijndaelManaged();
+                    cipher.GenerateKey();
+                    Key = cipher.Key;
+                    IV = cipher.IV;
 
 
-            createAccount();
+                    createAccount();
+                }
+            } 
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
         }
 
 
@@ -71,20 +92,19 @@ namespace Password_Hashing
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@Email, @Mobile,@Nric,@PasswordHash,@PasswordSalt,@DateTimeRegistered,@MobileVerified,@EmailVerified,@IV,@Key)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key)"))
                     //using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@Email, @Mobile,@Nric,@PasswordHash,@PasswordSalt,@DateTimeRegistered,@MobileVerified,@EmailVerified)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
                             cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.AddWithValue("@FirstName", tb_fname.Text.Trim());
+                            cmd.Parameters.AddWithValue("@LastName", tb_lname.Text.Trim());
+                            cmd.Parameters.AddWithValue("@CreditCard", encryptData(tb_creditcard.Text.Trim()));
                             cmd.Parameters.AddWithValue("@Email", tb_userid.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Mobile", tb_mobile.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Nric", Convert.ToBase64String( encryptData(tb_nric.Text.Trim())));
                             cmd.Parameters.AddWithValue("@PasswordHash", finalHash);
                             cmd.Parameters.AddWithValue("@PasswordSalt", salt);
-                            cmd.Parameters.AddWithValue("@DateTimeRegistered", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@MobileVerified", DBNull.Value);
-                            cmd.Parameters.AddWithValue("@EmailVerified", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@DateOfBirth", tb_dob.Text.Trim());
                             cmd.Parameters.AddWithValue("@IV", Convert.ToBase64String(IV));
                             cmd.Parameters.AddWithValue("@Key", Convert.ToBase64String(Key));
                             cmd.Connection = con;

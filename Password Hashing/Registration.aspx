@@ -19,6 +19,30 @@
         <table class="style1">
             <tr>
                 <td class="style3">
+        <asp:Label ID="Label7" runat="server" Text="First Name"></asp:Label>
+                </td>
+                <td class="style2">
+                    <asp:TextBox ID="tb_fname" runat="server" Height="36px" Width="280px">Jessica</asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
+        <asp:Label ID="Label8" runat="server" Text="Last Name"></asp:Label>
+                </td>
+                <td class="style2">
+                    <asp:TextBox ID="tb_lname" runat="server" Height="36px" Width="280px">Tan</asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style6">
+        <asp:Label ID="Label5" runat="server" Text="Credit Card Number"></asp:Label>
+                </td>
+                <td class="style7">
+                    <asp:TextBox ID="tb_creditcard" runat="server" Height="32px" Width="281px">4242 4242 4242 4242</asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="style3">
         <asp:Label ID="Label2" runat="server" Text="Email (UserID)"></asp:Label>
                 </td>
                 <td class="style2">
@@ -42,19 +66,11 @@
                 </td>
             </tr>
                         <tr>
-                <td class="style6">
-        <asp:Label ID="Label5" runat="server" Text="NRIC"></asp:Label>
-                </td>
-                <td class="style7">
-                    <asp:TextBox ID="tb_nric" runat="server" Height="32px" Width="281px">S8511018B</asp:TextBox>
-                </td>
-            </tr>
-                        <tr>
                 <td class="style3">
-        <asp:Label ID="Label6" runat="server" Text="Mobile"></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+65)
+        <asp:Label ID="Label6" runat="server" Text="Date of Birth"></asp:Label>
                 </td>
                 <td class="style2">
-                    <asp:TextBox ID="tb_mobile" runat="server" Height="32px" Width="281px">81888188</asp:TextBox>
+                    <asp:TextBox ID="tb_dob" runat="server" Height="32px" Width="281px">03-10-1997</asp:TextBox>
                 </td>
             </tr>
                         <tr>
