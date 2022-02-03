@@ -28,7 +28,7 @@
         <asp:Label ID="Label3" runat="server" Text="Password"></asp:Label>
                 </td>
                 <td class="style2">
-                    <asp:TextBox ID="tb_pwd" runat="server" Height="16px" Width="281px">mypassword</asp:TextBox>
+                    <asp:TextBox ID="tb_pwd" runat="server" Height="16px" Width="281px">P@ssw0rd1234</asp:TextBox>
                 </td>
             </tr>
                         <tr>

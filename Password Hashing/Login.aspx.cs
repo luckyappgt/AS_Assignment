@@ -52,10 +52,9 @@ namespace Password_Hashing
                         Response.Redirect("HomePage.aspx", false);
                     }
                     else
-                    {
+                    { 
                         errorMsg = "Userid or password is not valid. Please try again.";
                         lb_error.Text = errorMsg;
-                        Response.Redirect("Login.aspx", false);
                     }
                 }
             }

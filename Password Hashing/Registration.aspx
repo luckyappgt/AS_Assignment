@@ -9,8 +9,8 @@
         function validate() {
             var str = document.getElementById('<%=tb_pwd.ClientID %>').value;
 
-            if (str.length < 8) {
-                document.getElementById("lbl_pwdchecker").innerHTML = "Password Length Must be at Least 8 Characters";
+            if (str.length < 12) {
+                document.getElementById("lbl_pwdchecker").innerHTML = "Password Length Must be at Least 12 Characters";
                 document.getElementById("lbl_pwdchecker").style.color = "Red";
                 return ("too_short");
             }
@@ -98,7 +98,7 @@
         <asp:Label ID="Label3" runat="server" Text="Password"></asp:Label>
                 </td>
                 <td class="style2">
-                    <asp:TextBox ID="tb_pwd" runat="server" Height="32px" Width="281px" onkeyup="javascript:validate()">P@ssw0rd</asp:TextBox>
+                    <asp:TextBox ID="tb_pwd" runat="server" Height="32px" Width="281px" onkeyup="javascript:validate()">P@ssw0rd1234</asp:TextBox>
                     <asp:Label ID="lbl_pwdchecker" runat="server"></asp:Label>
                 </td>
             </tr>

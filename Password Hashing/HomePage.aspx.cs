@@ -11,6 +11,8 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace Password_Hashing
 {
@@ -41,6 +43,17 @@ namespace Password_Hashing
             else
             {
                 Response.Redirect("Login.aspx", false);
+            }
+
+            // testing session timeout auto redirect
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            if (!IsPostBack)
+            {
+                Session["Reset"] = true;
+                Configuration config = WebConfigurationManager.OpenWebConfiguration("~/Web.Config");
+                SessionStateSection section = (SessionStateSection)config.GetSection("system.web/sessionState");
+                int timeout = (int)section.Timeout.TotalMinutes * 1000 * 60;
+                ClientScript.RegisterStartupScript(this.GetType(), "SessionAlert", "SessionExpireAlert(" + timeout + ");", true);
             }
         }
 
