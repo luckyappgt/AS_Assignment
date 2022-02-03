@@ -123,6 +123,15 @@ namespace Password_Hashing
         protected global::System.Web.UI.WebControls.TextBox tb_pwd;
 
         /// <summary>
+        /// lbl_pwdchecker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_pwdchecker;
+
+        /// <summary>
         /// Label4 control.
         /// </summary>
         /// <remarks>
@@ -139,6 +148,15 @@ namespace Password_Hashing
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tb_cfpwd;
+
+        /// <summary>
+        /// lbl_pwdmatch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_pwdmatch;
 
         /// <summary>
         /// Label6 control.
@@ -175,14 +193,5 @@ namespace Password_Hashing
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lb_error1;
-
-        /// <summary>
-        /// lb_error2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_error2;
     }
 }

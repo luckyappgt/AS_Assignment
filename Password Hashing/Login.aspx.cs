@@ -43,7 +43,7 @@ namespace Password_Hashing
                     if (userHash.Equals(dbHash))
                     {
                         Session["UserID"] = userid;
-                        Response.Redirect("Success.aspx", false);
+                        Response.Redirect("HomePage.aspx", false);
                     }
                     else
                     {

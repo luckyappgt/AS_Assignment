@@ -14,12 +14,12 @@ using System.IO;
 
 namespace Password_Hashing
 {
-    public partial class Success : System.Web.UI.Page
+    public partial class HomePage : System.Web.UI.Page
     {
         string MYDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MYDBConnection"].ConnectionString;
         static byte[] Key = null;
         static byte[] IV = null;
-        static byte[] nric = null;
+        static byte[] creditcard = null;
         static string userid = null;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -44,15 +44,16 @@ namespace Password_Hashing
                 {
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptTransform, CryptoStreamMode.Read))
                     {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt)) {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
                             plainText = srDecrypt.ReadToEnd();
-                        
+
                         }
                     }
                 }
             }
-            
-            
+
+
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
@@ -82,9 +83,9 @@ namespace Password_Hashing
 
                             //cipherTextNRIC = (byte[])reader["Nric"];
                         }
-                        if (reader["Nric"] != DBNull.Value)
+                        if (reader["CreditCard"] != DBNull.Value)
                         {
-                            nric = Convert.FromBase64String(reader["Nric"].ToString());
+                            creditcard = Convert.FromBase64String(reader["CreditCard"].ToString());
 
                             //cipherTextNRIC = (byte[])reader["Nric"];
                         }
@@ -101,7 +102,7 @@ namespace Password_Hashing
                             //cipherTextNRIC = (byte[])reader["Nric"];
                         }
                     }
-                    lbl_nric.Text = decryptData(nric);
+                    lbl_creditcard.Text = decryptData(creditcard);
                 }
 
             }
@@ -118,5 +119,5 @@ namespace Password_Hashing
 
     }
 
-    
+
 }

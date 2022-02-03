@@ -10,6 +10,9 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 
+using System.Text.RegularExpressions;
+using System.Drawing;
+
 namespace Password_Hashing
 {
     public partial class Registration : System.Web.UI.Page
@@ -44,42 +47,80 @@ namespace Password_Hashing
                 if (reader.HasRows)
                 {
                     lb_error1.Text = "User already available";
+                    lbl_pwdchecker.Text = "";
                 }
                 else
                 {
-                    string pwd = tb_pwd.Text.ToString().Trim(); ;
+                    int scores = checkPassword(tb_pwd.Text);
+                    if (scores == 1)
+                    {
+                        lbl_pwdchecker.Text = "Status: Very Weak";
+                        lbl_pwdchecker.ForeColor = Color.Red;
+                    }
+                    else if (scores == 2)
+                    {
+                        lbl_pwdchecker.Text = "Status: Weak";
+                        lbl_pwdchecker.ForeColor = Color.Red;
+                    }
+                    else if (scores == 3)
+                    {
+                        lbl_pwdchecker.Text = "Status: Medium";
+                        lbl_pwdchecker.ForeColor = Color.Red;
+                    }
+                    else if (scores == 4)
+                    {
+                        lbl_pwdchecker.Text = "Status: Strong, not strong enough for account creation";
+                        lbl_pwdchecker.ForeColor = Color.Green;
+                    }
 
-                    //Generate random "salt" 
-                    RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                    byte[] saltByte = new byte[8];
+                    else if (scores > 4)
+                    {
+                        lbl_pwdchecker.Text = "Status: Very Strong";
+                        lbl_pwdchecker.ForeColor = Color.Green;
+                        if (tb_pwd.Text.ToString().Trim() == tb_cfpwd.Text.ToString().Trim())
+                        {
+                            string pwd = tb_pwd.Text.ToString().Trim();
 
-                    //Fills array of bytes with a cryptographically strong sequence of random values.
-                    rng.GetBytes(saltByte);
-                    salt = Convert.ToBase64String(saltByte);
+                            //Generate random "salt" 
+                            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                            byte[] saltByte = new byte[8];
 
-                    SHA512Managed hashing = new SHA512Managed();
+                            //Fills array of bytes with a cryptographically strong sequence of random values.
+                            rng.GetBytes(saltByte);
+                            salt = Convert.ToBase64String(saltByte);
 
-                    string pwdWithSalt = pwd + salt;
-                    byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
-                    byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+                            SHA512Managed hashing = new SHA512Managed();
 
-                    finalHash = Convert.ToBase64String(hashWithSalt);
+                            string pwdWithSalt = pwd + salt;
+                            byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
+                            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
 
-                    lb_error1.Text = "Salt:" + salt;
-                    lb_error2.Text = "Hash with salt:" + finalHash;
+                            finalHash = Convert.ToBase64String(hashWithSalt);
 
-                    RijndaelManaged cipher = new RijndaelManaged();
-                    cipher.GenerateKey();
-                    Key = cipher.Key;
-                    IV = cipher.IV;
+                            RijndaelManaged cipher = new RijndaelManaged();
+                            cipher.GenerateKey();
+                            Key = cipher.Key;
+                            IV = cipher.IV;
+
+                            lb_error1.Text = "Account Created";
 
 
-                    createAccount();
+                            createAccount();
+                        }
+                        else
+                        {
+                            lb_error1.Text = "Password does not match";
+                        }
+                    }
                 }
-            } 
+            }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
+            }
+            finally
+            {
+                connection.Close();
             }
 
         }
@@ -100,7 +141,7 @@ namespace Password_Hashing
                             cmd.CommandType = CommandType.Text;
                             cmd.Parameters.AddWithValue("@FirstName", tb_fname.Text.Trim());
                             cmd.Parameters.AddWithValue("@LastName", tb_lname.Text.Trim());
-                            cmd.Parameters.AddWithValue("@CreditCard", encryptData(tb_creditcard.Text.Trim()));
+                            cmd.Parameters.AddWithValue("@CreditCard", Convert.ToBase64String(encryptData(tb_creditcard.Text.Trim())));
                             cmd.Parameters.AddWithValue("@Email", tb_userid.Text.Trim());
                             cmd.Parameters.AddWithValue("@PasswordHash", finalHash);
                             cmd.Parameters.AddWithValue("@PasswordSalt", salt);
@@ -132,6 +173,42 @@ namespace Password_Hashing
             {
                 throw new Exception(ex.ToString());
             }
+        }
+
+        private int checkPassword(string password)
+        {
+            int score = 0;
+            if (password.Length < 8)
+            {
+                return 1;
+            }
+            else
+            {
+                score = 1;
+            }
+
+            if (Regex.IsMatch(password, "[a-z]"))
+            {
+                score++;
+            }
+
+            if (Regex.IsMatch(password, "[A-Z]"))
+            {
+                score++;
+            }
+
+            if (Regex.IsMatch(password, "[0-9]"))
+            {
+                score++;
+            }
+
+            if (Regex.IsMatch(password, "(?=.*[^a-zA-Z0-9])"))
+            {
+                score++;
+            }
+
+
+            return score;
         }
 
         protected byte[] encryptData(string data)

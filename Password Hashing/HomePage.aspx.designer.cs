@@ -11,7 +11,7 @@ namespace Password_Hashing
 {
 
 
-    public partial class Success
+    public partial class HomePage
     {
 
         /// <summary>
@@ -33,12 +33,21 @@ namespace Password_Hashing
         protected global::System.Web.UI.WebControls.Label lbl_userID;
 
         /// <summary>
-        /// lbl_nric control.
+        /// lbl_creditcard control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_nric;
+        protected global::System.Web.UI.WebControls.Label lbl_creditcard;
+
+        /// <summary>
+        /// btn_logout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_logout;
     }
 }
