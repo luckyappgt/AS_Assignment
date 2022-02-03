@@ -24,9 +24,24 @@ namespace Password_Hashing
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserID"] != null && Session["AuthToken"] != null && Request.Cookies["AuthToken"] != null)
+            {
+                if (!Session["AuthToken"].ToString().Equals(Request.Cookies["AuthToken"].Value))
+                {
+                    Response.Redirect("Login.aspx", false);
+                }
+                else
+                {
 
-            userid = Session["UserID"].ToString();
-            displayUserProfile(userid);
+                    userid = Session["UserID"].ToString();
+                    displayUserProfile(userid);
+                    btn_logout.Visible = true;
+                }
+            }
+            else
+            {
+                Response.Redirect("Login.aspx", false);
+            }
         }
 
         protected string decryptData(byte[] cipherText)
@@ -117,6 +132,26 @@ namespace Password_Hashing
             }
         }
 
+        protected void LogoutUser(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Session.RemoveAll();
+
+            Response.Redirect("Login.aspx", false);
+
+            if (Request.Cookies["ASP.NET_SessionId"] != null)
+            {
+                Response.Cookies["ASP.NET_SessionId"].Value = string.Empty;
+                Response.Cookies["ASP.NET_SessionId"].Expires = DateTime.Now.AddMonths(-20);
+            }
+
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                Response.Cookies["AuthToken"].Value = string.Empty;
+                Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
+            }
+        }
     }
 
 

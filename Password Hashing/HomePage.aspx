@@ -17,7 +17,8 @@
         </h2>
     </div>
         <p>
-            <asp:Button ID="btn_logout" runat="server" Text="Logout" Visible="false" />
+            <asp:Button ID="btn_logout" runat="server" Text="Logout" Visible="false" Height="30px" 
+        onclick="LogoutUser" Width="100px"/>
         </p>
     </form>
 </body>

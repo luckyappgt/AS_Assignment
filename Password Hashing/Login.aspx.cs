@@ -43,11 +43,18 @@ namespace Password_Hashing
                     if (userHash.Equals(dbHash))
                     {
                         Session["UserID"] = userid;
+
+                        string guid = Guid.NewGuid().ToString();
+                        Session["AuthToken"] = guid;
+
+                        Response.Cookies.Add(new HttpCookie("AuthToken", guid));
+
                         Response.Redirect("HomePage.aspx", false);
                     }
                     else
                     {
                         errorMsg = "Userid or password is not valid. Please try again.";
+                        lb_error.Text = errorMsg;
                         Response.Redirect("Login.aspx", false);
                     }
                 }
