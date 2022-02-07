@@ -57,6 +57,11 @@ namespace Password_Hashing
                         lb_error.Text = errorMsg;
                     }
                 }
+                else
+                {
+                    errorMsg = "Userid or password is not valid. Please try again.";
+                    lb_error.Text = errorMsg;
+                }
             }
             catch (Exception ex)
             {

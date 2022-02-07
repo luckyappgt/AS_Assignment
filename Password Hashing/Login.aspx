@@ -4,7 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Login</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LezjmEeAAAAAIJv31TlWdtqt81Act8wOQP4CR6r"></script>
 </head>
 <body>
        <form id="form1" runat="server">
@@ -41,8 +42,10 @@
                 </td>
             </tr>
     </table>
+
 &nbsp;&nbsp;&nbsp;
     <br />
+           <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" /><br />
            <br />
         <asp:Label ID="lb_error" runat="server"></asp:Label>
            <br />
@@ -55,5 +58,12 @@
     
     </div>
     </form>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LezjmEeAAAAAIJv31TlWdtqt81Act8wOQP4CR6r', { action: "Login" }).then(function (token) {
+                document.getElementById("g-recaptcha-response").value = token;
+            });
+        });
+    </script>
 </body>
 </html>
