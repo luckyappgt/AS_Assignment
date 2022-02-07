@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 
 using System.Text.RegularExpressions;
 using System.Drawing;
+using System.IO;
 
 namespace Password_Hashing
 {
@@ -26,6 +27,10 @@ namespace Password_Hashing
 
         static string line = "\r";
 
+        string strFileName;
+        string strFilePath;
+        string strFolder;
+
         //static string isDebug = ConfigurationManager.AppSettings["isDebug"].ToString();
 
 
@@ -36,6 +41,7 @@ namespace Password_Hashing
 
         protected void btn_Submit_Click(object sender, EventArgs e)
         {
+
             SqlConnection connection = new SqlConnection(MYDBConnectionString);
             string sql = "select * from Account where email=@userid";
             SqlCommand command = new SqlCommand(sql, connection);
@@ -79,6 +85,26 @@ namespace Password_Hashing
                         lbl_pwdchecker.ForeColor = Color.Green;
                         if (tb_pwd.Text.ToString().Trim() == tb_cfpwd.Text.ToString().Trim())
                         {
+                            // photo upload
+
+                            strFolder = Server.MapPath("./Photos/");
+                            // Retrieve the name of the file that is posted.
+                            strFileName = oFile.PostedFile.FileName;
+                            strFileName = Path.GetFileName(strFileName);
+                            if (oFile.Value != "")
+                            {
+                                if (!Directory.Exists(strFolder))
+                                {
+                                    Directory.CreateDirectory(strFolder);
+                                }
+                                strFilePath = strFolder + strFileName;
+                                oFile.PostedFile.SaveAs(strFilePath);
+                            }
+                            else
+                            {
+                                lb_error1.Text = "Click 'Browse' to select the file to upload.";
+                            }
+
                             string pwd = tb_pwd.Text.ToString().Trim();
 
                             //Generate random "salt" 
@@ -133,7 +159,7 @@ namespace Password_Hashing
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath)"))
                     //using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@Email, @Mobile,@Nric,@PasswordHash,@PasswordSalt,@DateTimeRegistered,@MobileVerified,@EmailVerified)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
@@ -148,6 +174,7 @@ namespace Password_Hashing
                             cmd.Parameters.AddWithValue("@DateOfBirth", tb_dob.Text.Trim());
                             cmd.Parameters.AddWithValue("@IV", Convert.ToBase64String(IV));
                             cmd.Parameters.AddWithValue("@Key", Convert.ToBase64String(Key));
+                            cmd.Parameters.AddWithValue("@PhotoPath", strFilePath);
                             cmd.Connection = con;
                             try
                             {
