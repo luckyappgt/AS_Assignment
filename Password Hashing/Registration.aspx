@@ -124,7 +124,7 @@
                         <asp:Label ID="Label9" runat="server" Text="Photo"></asp:Label>
                     </td>
                     <td class="style2">
-                        <input id="oFile" type="file" runat="server" name="oFile" accept="image/*" />
+                        <input id="photoUpload" type="file" runat="server" name="photoUpload" accept="image/*" />
                     </td>
                 </tr>
                 <tr>

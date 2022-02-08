@@ -18,7 +18,13 @@
     <form id="form1" runat="server">
         <div>
             <h2>User Profile</h2>
-            <h2>User ID :
+            <h2>First Name :
+                <asp:Label ID="lbl_fname" runat="server"></asp:Label>
+            </h2>
+            <h2>Last Name :
+                <asp:Label ID="lbl_lname" runat="server"></asp:Label>
+            </h2>
+            <h2>Email :
                 <asp:Label ID="lbl_userID" runat="server"></asp:Label>
             </h2>
             <h2>Credit Card Number :&nbsp;

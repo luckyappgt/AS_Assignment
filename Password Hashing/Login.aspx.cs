@@ -23,8 +23,7 @@ namespace Password_Hashing
         }
 
         protected void btn_Submit_Click(object sender, EventArgs e)
-        {
-            //Response.Write("<script>window.alert('before getDBHash.')</script>");         
+        {        
             string pwd = tb_pwd.Text.ToString().Trim();
             string userid = tb_userid.Text.ToString().Trim();
 
@@ -149,10 +148,6 @@ namespace Password_Hashing
             finally { connection.Close(); }
             return h;
         }
-
-
-
-
 
         protected string decryptData(byte[] cipherText)
         {

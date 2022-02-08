@@ -105,29 +105,29 @@ namespace Password_Hashing
                 {
                     while (reader.Read())
                     {
+                        if (reader["FirstName"] != DBNull.Value)
+                        {
+                            lbl_fname.Text = reader["FirstName"].ToString();
+                        }
+                        if (reader["LastName"] != DBNull.Value)
+                        {
+                            lbl_lname.Text = reader["LastName"].ToString();
+                        }
                         if (reader["Email"] != DBNull.Value)
                         {
                             lbl_userID.Text = reader["Email"].ToString();
-
-                            //cipherTextNRIC = (byte[])reader["Nric"];
                         }
                         if (reader["CreditCard"] != DBNull.Value)
                         {
                             creditcard = Convert.FromBase64String(reader["CreditCard"].ToString());
-
-                            //cipherTextNRIC = (byte[])reader["Nric"];
                         }
                         if (reader["IV"] != DBNull.Value)
                         {
                             IV = Convert.FromBase64String(reader["IV"].ToString());
-
-                            //cipherTextNRIC = (byte[])reader["Nric"];
                         }
                         if (reader["Key"] != DBNull.Value)
                         {
                             Key = Convert.FromBase64String(reader["Key"].ToString());
-
-                            //cipherTextNRIC = (byte[])reader["Nric"];
                         }
                     }
                     lbl_creditcard.Text = decryptData(creditcard);

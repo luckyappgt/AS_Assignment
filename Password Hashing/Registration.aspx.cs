@@ -18,7 +18,6 @@ namespace Password_Hashing
 {
     public partial class Registration : System.Web.UI.Page
     {
-
         string MYDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MYDBConnection"].ConnectionString;
         static string finalHash;
         static string salt;
@@ -30,9 +29,6 @@ namespace Password_Hashing
         string strFileName;
         string strFilePath;
         string strFolder;
-
-        //static string isDebug = ConfigurationManager.AppSettings["isDebug"].ToString();
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -79,7 +75,7 @@ namespace Password_Hashing
                         lbl_pwdchecker.ForeColor = Color.Green;
                     }
 
-                    else if (scores > 4)
+                    else if (scores == 5)
                     {
                         lbl_pwdchecker.Text = "Status: Very Strong";
                         lbl_pwdchecker.ForeColor = Color.Green;
@@ -89,16 +85,16 @@ namespace Password_Hashing
 
                             strFolder = Server.MapPath("./Photos/");
                             // Retrieve the name of the file that is posted.
-                            strFileName = oFile.PostedFile.FileName;
+                            strFileName = photoUpload.PostedFile.FileName;
                             strFileName = Path.GetFileName(strFileName);
-                            if (oFile.Value != "")
+                            if (photoUpload.Value != "")
                             {
                                 if (!Directory.Exists(strFolder))
                                 {
                                     Directory.CreateDirectory(strFolder);
                                 }
                                 strFilePath = strFolder + strFileName;
-                                oFile.PostedFile.SaveAs(strFilePath);
+                                photoUpload.PostedFile.SaveAs(strFilePath);
                             }
                             else
                             {
@@ -160,7 +156,6 @@ namespace Password_Hashing
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath)"))
-                    //using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@Email, @Mobile,@Nric,@PasswordHash,@PasswordSalt,@DateTimeRegistered,@MobileVerified,@EmailVerified)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
