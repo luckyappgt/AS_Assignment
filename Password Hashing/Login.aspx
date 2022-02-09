@@ -21,7 +21,7 @@
         <asp:Label ID="Label2" runat="server" Text="User ID/Email"></asp:Label>
                 </td>
                 <td class="style2">
-                    <asp:TextBox ID="tb_userid" runat="server" Height="16px" Width="280px">jayson@yahoo.com</asp:TextBox>
+                    <asp:TextBox ID="tb_userid" runat="server" Height="16px" Width="280px" placeholder="example@email.com" TextMode="Email"></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -29,7 +29,7 @@
         <asp:Label ID="Label3" runat="server" Text="Password"></asp:Label>
                 </td>
                 <td class="style2">
-                    <asp:TextBox ID="tb_pwd" runat="server" Height="16px" Width="281px">P@ssw0rd1234</asp:TextBox>
+                    <asp:TextBox ID="tb_pwd" runat="server" Height="16px" Width="281px" TextMode="Password"></asp:TextBox>
                 </td>
             </tr>
                         <tr>
@@ -37,11 +37,18 @@
        
                 </td>
                 <td class="style2">
-    <asp:Button ID="btn_Submit" runat="server" Height="48px" 
-        onclick="btn_Submit_Click" Text="Submit" Width="288px" />
+    <asp:Button ID="btn_login" runat="server" Height="48px" 
+        onclick="btn_Login_Click" Text="Login" Width="288px" />
                 </td>
             </tr>
     </table>
+           <h2>
+        <br />
+        <asp:Label ID="Label4" runat="server">No Account? Click on the button below to register</asp:Label>
+        <br />
+   </h2>
+           <asp:Button ID="btn_register" runat="server" Height="48px" 
+        onclick="btn_register_Click" Text="Register" Width="288px" />
 
 &nbsp;&nbsp;&nbsp;
     <br />

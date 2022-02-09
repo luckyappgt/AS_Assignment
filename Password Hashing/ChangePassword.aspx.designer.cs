@@ -11,7 +11,7 @@ namespace Password_Hashing
 {
 
 
-    public partial class Login
+    public partial class ChangePassword
     {
 
         /// <summary>
@@ -42,13 +42,22 @@ namespace Password_Hashing
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// tb_userid control.
+        /// tb_oldpwd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_userid;
+        protected global::System.Web.UI.WebControls.TextBox tb_oldpwd;
+
+        /// <summary>
+        /// lbl_oldmatch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_oldmatch;
 
         /// <summary>
         /// Label3 control.
@@ -60,22 +69,22 @@ namespace Password_Hashing
         protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// tb_pwd control.
+        /// tb_newpwd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_pwd;
+        protected global::System.Web.UI.WebControls.TextBox tb_newpwd;
 
         /// <summary>
-        /// btn_login control.
+        /// lbl_pwdchecker control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_login;
+        protected global::System.Web.UI.WebControls.Label lbl_pwdchecker;
 
         /// <summary>
         /// Label4 control.
@@ -87,21 +96,39 @@ namespace Password_Hashing
         protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
-        /// btn_register control.
+        /// tb_cfpwd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_register;
+        protected global::System.Web.UI.WebControls.TextBox tb_cfpwd;
 
         /// <summary>
-        /// lb_error control.
+        /// lbl_pwdmatch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lb_error;
+        protected global::System.Web.UI.WebControls.Label lbl_pwdmatch;
+
+        /// <summary>
+        /// btn_Submit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_Submit;
+
+        /// <summary>
+        /// lb_error1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb_error1;
     }
 }

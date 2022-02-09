@@ -21,7 +21,6 @@ namespace Password_Hashing
         string MYDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MYDBConnection"].ConnectionString;
         static byte[] Key = null;
         static byte[] IV = null;
-        static byte[] creditcard = null;
         static string userid = null;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -38,6 +37,7 @@ namespace Password_Hashing
                     userid = Session["UserID"].ToString();
                     displayUserProfile(userid);
                     btn_logout.Visible = true;
+                    btn_changepwd.Visible = true;
                 }
             }
             else
@@ -117,10 +117,6 @@ namespace Password_Hashing
                         {
                             lbl_userID.Text = reader["Email"].ToString();
                         }
-                        if (reader["CreditCard"] != DBNull.Value)
-                        {
-                            creditcard = Convert.FromBase64String(reader["CreditCard"].ToString());
-                        }
                         if (reader["IV"] != DBNull.Value)
                         {
                             IV = Convert.FromBase64String(reader["IV"].ToString());
@@ -130,7 +126,6 @@ namespace Password_Hashing
                             Key = Convert.FromBase64String(reader["Key"].ToString());
                         }
                     }
-                    lbl_creditcard.Text = decryptData(creditcard);
                 }
 
             }
@@ -164,6 +159,11 @@ namespace Password_Hashing
                 Response.Cookies["AuthToken"].Value = string.Empty;
                 Response.Cookies["AuthToken"].Expires = DateTime.Now.AddMonths(-20);
             }
+        }
+
+        protected void ChangePassword(object sender, EventArgs e)
+        {
+            Response.Redirect("ChangePassword.aspx", false);
         }
     }
 

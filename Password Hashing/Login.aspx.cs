@@ -22,7 +22,7 @@ namespace Password_Hashing
 
         }
 
-        protected void btn_Submit_Click(object sender, EventArgs e)
+        protected void btn_Login_Click(object sender, EventArgs e)
         {        
             string pwd = tb_pwd.Text.ToString().Trim();
             string userid = tb_userid.Text.ToString().Trim();
@@ -52,12 +52,14 @@ namespace Password_Hashing
                     }
                     else
                     { 
+                        // invalid password
                         errorMsg = "Userid or password is not valid. Please try again.";
                         lb_error.Text = errorMsg;
                     }
                 }
                 else
                 {
+                    // invalid user
                     errorMsg = "Userid or password is not valid. Please try again.";
                     lb_error.Text = errorMsg;
                 }
@@ -175,6 +177,9 @@ namespace Password_Hashing
             return decryptedString;
         }
 
-
+        protected void btn_register_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Registration.aspx", false);
+        }
     }
 }

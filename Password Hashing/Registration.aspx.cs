@@ -56,7 +56,7 @@ namespace Password_Hashing
                     int scores = checkPassword(tb_pwd.Text);
                     if (scores == 1)
                     {
-                        lbl_pwdchecker.Text = "Status: Very Weak";
+                        lbl_pwdchecker.Text = "Status: Weak";
                         lbl_pwdchecker.ForeColor = Color.Red;
                     }
                     else if (scores == 2)
@@ -66,7 +66,7 @@ namespace Password_Hashing
                     }
                     else if (scores == 3)
                     {
-                        lbl_pwdchecker.Text = "Status: Medium";
+                        lbl_pwdchecker.Text = "Status: Weak";
                         lbl_pwdchecker.ForeColor = Color.Red;
                     }
                     else if (scores == 4)
@@ -155,7 +155,7 @@ namespace Password_Hashing
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @CreditCV, @CreditExpiry, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
@@ -163,6 +163,8 @@ namespace Password_Hashing
                             cmd.Parameters.AddWithValue("@FirstName", tb_fname.Text.Trim());
                             cmd.Parameters.AddWithValue("@LastName", tb_lname.Text.Trim());
                             cmd.Parameters.AddWithValue("@CreditCard", Convert.ToBase64String(encryptData(tb_creditcard.Text.Trim())));
+                            cmd.Parameters.AddWithValue("@CreditCV", Convert.ToBase64String(encryptData(tb_creditcv.Text.Trim())));
+                            cmd.Parameters.AddWithValue("@CreditExpiry", Convert.ToBase64String(encryptData(tb_creditexpiry.Text.Trim())));
                             cmd.Parameters.AddWithValue("@Email", tb_userid.Text.Trim());
                             cmd.Parameters.AddWithValue("@PasswordHash", finalHash);
                             cmd.Parameters.AddWithValue("@PasswordSalt", salt);
@@ -262,6 +264,9 @@ namespace Password_Hashing
             return cipherText;
         }
 
-
+        protected void btn_Login_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Login.aspx", false);
+        }
     }
 }

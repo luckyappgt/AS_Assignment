@@ -26,14 +26,13 @@
             </h2>
             <h2>Email :
                 <asp:Label ID="lbl_userID" runat="server"></asp:Label>
-            </h2>
-            <h2>Credit Card Number :&nbsp;
-            <asp:Label ID="lbl_creditcard" runat="server"></asp:Label>
-            </h2>
+            </h2
         </div>
         <p>
             <asp:Button ID="btn_logout" runat="server" Text="Logout" Visible="false" Height="30px"
-                OnClick="LogoutUser" Width="100px" />
+                OnClick="LogoutUser" Width="100px" /> &nbsp;
+            <asp:Button ID="btn_changepwd" runat="server" Text="Change Password" Visible="false" Height="30px"
+                OnClick="ChangePassword" Width="120px" />
         </p>
     </form>
 </body>
