@@ -95,39 +95,37 @@ namespace Password_Hashing
                                 }
                                 strFilePath = strFolder + strFileName;
                                 photoUpload.PostedFile.SaveAs(strFilePath);
+                                string pwd = tb_pwd.Text.ToString().Trim();
+
+                                //Generate random "salt" 
+                                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                                byte[] saltByte = new byte[8];
+
+                                //Fills array of bytes with a cryptographically strong sequence of random values.
+                                rng.GetBytes(saltByte);
+                                salt = Convert.ToBase64String(saltByte);
+
+                                SHA512Managed hashing = new SHA512Managed();
+
+                                string pwdWithSalt = pwd + salt;
+                                byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
+                                byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
+
+                                finalHash = Convert.ToBase64String(hashWithSalt);
+
+                                RijndaelManaged cipher = new RijndaelManaged();
+                                cipher.GenerateKey();
+                                Key = cipher.Key;
+                                IV = cipher.IV;
+
+                                createAccount();
+                                Response.Redirect("Login.aspx", false);
                             }
                             else
                             {
-                                lb_error1.Text = "Click 'Browse' to select the file to upload.";
+                                lb_error1.Text = "Click 'Choose File' to select the file to upload.";
                             }
 
-                            string pwd = tb_pwd.Text.ToString().Trim();
-
-                            //Generate random "salt" 
-                            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                            byte[] saltByte = new byte[8];
-
-                            //Fills array of bytes with a cryptographically strong sequence of random values.
-                            rng.GetBytes(saltByte);
-                            salt = Convert.ToBase64String(saltByte);
-
-                            SHA512Managed hashing = new SHA512Managed();
-
-                            string pwdWithSalt = pwd + salt;
-                            byte[] plainHash = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwd));
-                            byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
-
-                            finalHash = Convert.ToBase64String(hashWithSalt);
-
-                            RijndaelManaged cipher = new RijndaelManaged();
-                            cipher.GenerateKey();
-                            Key = cipher.Key;
-                            IV = cipher.IV;
-
-                            lb_error1.Text = "Account Created";
-
-
-                            createAccount();
                         }
                         else
                         {
@@ -155,7 +153,7 @@ namespace Password_Hashing
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @CreditCV, @CreditExpiry, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath)"))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Account VALUES(@FirstName, @LastName, @CreditCard, @CreditCV, @CreditExpiry, @Email, @PasswordHash, @PasswordSalt, @DateOfBirth ,@IV,@Key, @PhotoPath, @Locked)"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
@@ -172,6 +170,7 @@ namespace Password_Hashing
                             cmd.Parameters.AddWithValue("@IV", Convert.ToBase64String(IV));
                             cmd.Parameters.AddWithValue("@Key", Convert.ToBase64String(Key));
                             cmd.Parameters.AddWithValue("@PhotoPath", strFilePath);
+                            cmd.Parameters.AddWithValue("@Locked", false);
                             cmd.Connection = con;
                             try
                             {

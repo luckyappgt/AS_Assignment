@@ -54,7 +54,8 @@
     <br />
            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" /><br />
            <br />
-        <asp:Label ID="lb_error" runat="server"></asp:Label>
+        <asp:Label ID="lb_error" runat="server"></asp:Label> <br />
+           <asp:Label ID="lb_locked" runat="server"></asp:Label>
            <br />
            <br />
            <br />

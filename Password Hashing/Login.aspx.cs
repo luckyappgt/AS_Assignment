@@ -17,6 +17,8 @@ namespace Password_Hashing
 
         string MYDBConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MYDBConnection"].ConnectionString;
         static string errorMsg = "";
+        static int attempts = 0;
+        static string lockedstatus;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -39,22 +41,80 @@ namespace Password_Hashing
                     byte[] hashWithSalt = hashing.ComputeHash(Encoding.UTF8.GetBytes(pwdWithSalt));
                     string userHash = Convert.ToBase64String(hashWithSalt);
 
-                    if (userHash.Equals(dbHash))
+                    SqlConnection connection = new SqlConnection(MYDBConnectionString);
+                    string sql = "select Locked FROM ACCOUNT WHERE Email=@USERID";
+                    SqlCommand command = new SqlCommand(sql, connection);
+                    command.Parameters.AddWithValue("@USERID", userid);
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        Session["UserID"] = userid;
+                        while (reader.Read())
+                        {
+                            if (reader["Locked"] != DBNull.Value)
+                            {
+                                lockedstatus = reader["Locked"].ToString();
+                            }
+                        }
+                    }
 
-                        string guid = Guid.NewGuid().ToString();
-                        Session["AuthToken"] = guid;
-
-                        Response.Cookies.Add(new HttpCookie("AuthToken", guid));
-
-                        Response.Redirect("HomePage.aspx", false);
+                    if (lockedstatus == "True")
+                    {
+                        lb_error.Text = "You have been locked out. Please contact website adminstrator";
                     }
                     else
-                    { 
-                        // invalid password
-                        errorMsg = "Userid or password is not valid. Please try again.";
-                        lb_error.Text = errorMsg;
+                    {
+                        if (userHash.Equals(dbHash))
+                        {
+                            Session["UserID"] = userid;
+
+                            string guid = Guid.NewGuid().ToString();
+                            Session["AuthToken"] = guid;
+
+                            Response.Cookies.Add(new HttpCookie("AuthToken", guid));
+
+                            Response.Redirect("HomePage.aspx", false);
+                        }
+                        else
+                        {
+                            // invalid password
+                            if (attempts < 3)
+                            {
+                                attempts += 1;
+                                errorMsg = "Userid or password is not valid. Please try again.";
+                                lb_error.Text = errorMsg;
+                            }
+                            else
+                            {
+                                using (SqlConnection con = new SqlConnection(MYDBConnectionString))
+                                {
+                                    using (SqlCommand cmd = new SqlCommand("UPDATE Account SET Locked=1 WHERE Email=@Email"))
+                                    {
+                                        using (SqlDataAdapter sda = new SqlDataAdapter())
+                                        {
+                                            cmd.CommandType = CommandType.Text;
+                                            cmd.Parameters.AddWithValue("@Email", userid);
+                                            cmd.Connection = con;
+                                        }
+                                        try
+                                        {
+                                            con.Open();
+                                            cmd.ExecuteNonQuery();
+                                            lb_error.Text = "You have been locked out. Please contact website adminstrator";
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            throw new Exception(ex.ToString());
+                                        }
+                                        finally
+                                        {
+                                            con.Close();
+                                            // to allow other users to login
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
                     }
                 }
                 else

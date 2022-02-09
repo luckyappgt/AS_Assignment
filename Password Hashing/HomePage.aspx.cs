@@ -37,7 +37,7 @@ namespace Password_Hashing
                     userid = Session["UserID"].ToString();
                     displayUserProfile(userid);
                     btn_logout.Visible = true;
-                    btn_changepwd.Visible = true;
+                    /*btn_changepwd.Visible = true;*/
                 }
             }
             else
@@ -161,6 +161,7 @@ namespace Password_Hashing
             }
         }
 
+        // changing of password will cause user to not be able to sign in using new password, as well as old password
         protected void ChangePassword(object sender, EventArgs e)
         {
             Response.Redirect("ChangePassword.aspx", false);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// changing of password will cause user to not be able to sign in using new password, as well as old password
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -44,6 +45,7 @@ namespace Password_Hashing
         protected void btn_Submit_Click(object sender, EventArgs e)
         {
             string oldpwd = tb_oldpwd.Text.ToString().Trim();
+            string userid = Session["UserID"].ToString();
 
             SHA512Managed hashing = new SHA512Managed();
             string dbHash = getDBHash(userid);
@@ -302,7 +304,7 @@ namespace Password_Hashing
             {
                 using (SqlConnection con = new SqlConnection(MYDBConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("UPDATE FROM Account SET PasswordHash=@PasswordHash, PasswordSalt=@PasswordSalt, IV=@IV, Key=@Key WHERE Email=@Email"))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Account SET PasswordHash=@PasswordHash, PasswordSalt=@PasswordSalt, IV=@IV, [Key]=@Key WHERE Email=@Email"))
                     {
                         using (SqlDataAdapter sda = new SqlDataAdapter())
                         {
