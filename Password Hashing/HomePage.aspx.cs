@@ -45,7 +45,6 @@ namespace Password_Hashing
                 Response.Redirect("Login.aspx", false);
             }
 
-            // testing session timeout auto redirect
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             if (!IsPostBack)
             {
