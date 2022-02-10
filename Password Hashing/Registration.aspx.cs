@@ -54,17 +54,7 @@ namespace Password_Hashing
                 else
                 {
                     int scores = checkPassword(tb_pwd.Text);
-                    if (scores == 1)
-                    {
-                        lbl_pwdchecker.Text = "Status: Weak";
-                        lbl_pwdchecker.ForeColor = Color.Red;
-                    }
-                    else if (scores == 2)
-                    {
-                        lbl_pwdchecker.Text = "Status: Weak";
-                        lbl_pwdchecker.ForeColor = Color.Red;
-                    }
-                    else if (scores == 3)
+                    if (scores <= 3)
                     {
                         lbl_pwdchecker.Text = "Status: Weak";
                         lbl_pwdchecker.ForeColor = Color.Red;
