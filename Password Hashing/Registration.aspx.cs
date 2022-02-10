@@ -237,12 +237,6 @@ namespace Password_Hashing
                 byte[] plainText = Encoding.UTF8.GetBytes(data);
                 cipherText = encryptTransform.TransformFinalBlock(plainText, 0, plainText.Length);
 
-
-                //Encrypt
-                //cipherText = encryptTransform.TransformFinalBlock(plainText, 0, plainText.Length);
-                //cipherString = Convert.ToBase64String(cipherText);
-                //Console.WriteLine("Encrypted Text: " + cipherString);
-
             }
             catch (Exception ex)
             {
